@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e5bf97acb2cf2dc4590e9d0cc40a1152, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -119,4 +119,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTime: 2
-  explosion: {fileID: 1764179148400610016, guid: 146cadad110c6ef44868290863c62e05, type: 3}
+  explosion: {fileID: 145502729167991633, guid: 9918b62f6ef4b0b4b89f400efa38eb99, type: 3}
