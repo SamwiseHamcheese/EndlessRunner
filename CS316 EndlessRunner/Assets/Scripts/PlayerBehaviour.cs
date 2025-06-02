@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -45,8 +46,12 @@ public class PlayerBehaviour : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (PauseScreenBehaviour.paused)
+        {
+            return;
+        }
         var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
         switch (horizMovement)
         {
@@ -62,7 +67,6 @@ public class PlayerBehaviour : MonoBehaviour
                 }
                 break;
         }
-
         if (Input.GetMouseButton(0))
         {
             Vector2 screenPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
@@ -77,6 +81,18 @@ public class PlayerBehaviour : MonoBehaviour
             ScalePlayer();
         }
         rb.AddForce(horizontalSpeed, 0, rollSpeed);
+    }
+    private void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            var pauseBehaviour = GameObject.FindObjectOfType<PauseScreenBehaviour>();
+            pauseBehaviour.SetPauseMenu(!PauseScreenBehaviour.paused);
+        }
+        if (PauseScreenBehaviour.paused)
+        {
+            return;
+        }
     }
     private float CalculateMovement(Vector3 screenPos)
     {
