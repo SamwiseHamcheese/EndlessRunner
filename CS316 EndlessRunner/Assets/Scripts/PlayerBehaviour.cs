@@ -13,6 +13,8 @@ public class PlayerBehaviour : MonoBehaviour
     [Range(0,10)]
     public float rollSpeed = 5;
 
+    private MobileJoystick joystick;
+
     public enum MobileHorizMovement
     {
         Accelerometer,
@@ -43,6 +45,8 @@ public class PlayerBehaviour : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
+
+        joystick = GameObject.FindObjectOfType<MobileJoystick>();
     }
 
     // Update is called once per frame
@@ -53,6 +57,10 @@ public class PlayerBehaviour : MonoBehaviour
             return;
         }
         var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
+        if(joystick && joystick.axisValue.x != 0)
+        {
+            horizontalSpeed = joystick.axisValue.x * dodgeSpeed;
+        }
         switch (horizMovement)
         {
             case MobileHorizMovement.Accelerometer:
