@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SocialPlatforms.Impl;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerBehaviour : MonoBehaviour
@@ -13,8 +15,11 @@ public class PlayerBehaviour : MonoBehaviour
     [Range(0,10)]
     public float rollSpeed = 5;
 
-    private MobileJoystick joystick;
+    [Header("Object Reference")]
+    public TextMeshProUGUI scoreText;
 
+    private MobileJoystick joystick;
+    private float score = 0;
     public enum MobileHorizMovement
     {
         Accelerometer,
@@ -47,6 +52,8 @@ public class PlayerBehaviour : MonoBehaviour
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
 
         joystick = GameObject.FindObjectOfType<MobileJoystick>();
+
+        Score = 0;
     }
 
     // Update is called once per frame
@@ -56,6 +63,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             return;
         }
+        Score += Time.deltaTime;
         var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
         if(joystick && joystick.axisValue.x != 0)
         {
@@ -100,6 +108,30 @@ public class PlayerBehaviour : MonoBehaviour
         if (PauseScreenBehaviour.paused)
         {
             return;
+        }
+    }
+    public float Score
+    {
+        get
+        {
+            return score;
+        }
+        set
+        {
+            score = value;
+            if(scoreText == null)
+            {
+                Debug.LogError("Score Text is not set. " + "Please go to the INspector and assign it");
+                return;
+            }
+
+            int cleanScore = (int)score;
+            scoreText.text = cleanScore.ToString();
+
+            if(cleanScore > PlayerPrefs.GetInt("score"))
+            {
+                PlayerPrefs.SetInt("score", cleanScore);
+            }
         }
     }
     private float CalculateMovement(Vector3 screenPos)
