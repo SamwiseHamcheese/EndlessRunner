@@ -21,7 +21,15 @@ public class PauseScreenBehaviour : MainMenuBehaviour
     {
         paused = isPaused;
         Time.timeScale = (paused) ? 0 : 1;
-        pauseMenu.SetActive(paused);
+        //pauseMenu.SetActive(paused);
+        if(paused)
+        {
+            SlideMenuIn(pauseMenu);
+        }
+        else
+        {
+            SlideMenuOut(pauseMenu);
+        }
         onScreenContols.SetActive(!paused);
     }
     private void Start()
